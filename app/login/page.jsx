@@ -7,13 +7,14 @@ import { useRouter } from "next/navigation";
 const Login = () => {
   const [error, setError] = useState("");
   const router = useRouter();
-  const session = useSession();
+  // const session = useSession();
+  const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
-    if (session.status === "authenticated") {
+    if (sessionStatus === "authenticated") {
       router.replace("/dashboard");
     }
-  }, [session, router]);
+  }, [sessionStatus, router]);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -50,41 +51,60 @@ const Login = () => {
     }
   };
 
+  if (sessionStatus === "loading") {
+    return <h1>Loading...</h1>;
+  }
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="bg-[#212121] p-8 rounded shadow-md w-96">
-        <h1 className="text-4xl text-center text-white font-semibold mb-8">
-          Login
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
-            placeholder="Email"
-            required
-          />
-          <input
-            type="password"
-            className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
-            placeholder="Password"
-            required
-          />
+    sessionStatus !== "authenticated" && (
+      <div className="flex min-h-screen flex-col items-center justify-between p-24">
+        <div className="bg-[#212121] p-8 rounded shadow-md w-96">
+          <h1 className="text-4xl text-center text-white font-semibold mb-8">
+            Login
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
+              placeholder="Email"
+              required
+            />
+            <input
+              type="password"
+              className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
+              placeholder="Password"
+              required
+            />
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            >
+              Sign In
+            </button>
+            <p className="text-red-500 text-[16px] mb-2 mt-2">
+              {error && error}
+            </p>
+          </form>
+          <div className="text-center text-sm text-gray-500 mt-2 mb-2">
+            - OR -
+          </div>
           <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            onClick={() => {
+              signIn("github");
+            }}
+            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
           >
-            Sign In
+            Sign In with GitHub
           </button>
-          <p className="text-red-500 text-[16px] mb-2 mt-2">{error && error}</p>
-        </form>
-        <div className="text-white text-sm py-2">
-          Don't have an account?{" "}
-          <Link href={"/signup"} className="text-blue-500 hover:underline">
-            Sign Up
-          </Link>
+          <div className="text-white text-sm py-2">
+            Don't have an account?{" "}
+            <Link href={"/signup"} className="text-blue-500 hover:underline">
+              Sign Up
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    )
   );
 };
 

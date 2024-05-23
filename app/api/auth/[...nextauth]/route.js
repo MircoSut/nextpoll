@@ -37,6 +37,33 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
+  callbacks: {
+    async signIn({ user, account }) {
+      if (account.provider == "credentials") {
+        return true;
+      }
+      if (account.provider == "github") {
+        await connectToMongoDB();
+
+        try {
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new User({
+              email: user.email,
+            });
+
+            await newUser.save();
+            console.log("GitHub account saved in the db");
+            return true;
+          }
+          return true;
+        } catch (error) {
+          console.log("Error saving user", error);
+          return false;
+        }
+      }
+    },
+  },
 };
 
 export const handler = NextAuth(authOptions);
