@@ -62,7 +62,11 @@ const SignUp = () => {
   };
 
   if (sessionStatus === "loading") {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="h-screen">
+        <h1>Loading...</h1>
+      </div>
+    );
   }
 
   return (
