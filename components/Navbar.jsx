@@ -10,6 +10,8 @@ const Navbar = () => {
 
   const router = useRouter();
 
+  const username = session?.user?.email.split("@")[0];
+
   const handleSignOut = async () => {
     await signOut();
     router.push("/"); // Redirect to the home page after sign out
@@ -40,7 +42,10 @@ const Navbar = () => {
           </button>
         </div>
         <div className="flex gap-2">
-          <li className="mt-1">{session?.user?.email || "User"}</li>
+          <li className="mt-1">
+            {username || session?.user?.email}
+            {console.log(session?.user)}
+          </li>
           <li>
             <button
               onClick={handleSignOut}
