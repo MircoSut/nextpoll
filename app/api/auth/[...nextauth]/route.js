@@ -24,7 +24,7 @@ export const authOptions = {
               user.password
             );
             if (IsPasswordCorrect) {
-              return user;
+              return { id: user._id };
             }
           }
         } catch (error) {
@@ -50,6 +50,7 @@ export const authOptions = {
           if (!existingUser) {
             const newUser = new User({
               email: user.email,
+              username: user.name, // GitHub username
             });
 
             await newUser.save();

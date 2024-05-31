@@ -4,19 +4,24 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
-  const { email, password } = await request.json();
+  const { email, username, password } = await request.json();
 
   await connectToMongoDB();
 
   const existingUser = await User.findOne({ email });
+  const existingUsername = await User.findOne({ username });
 
   if (existingUser) {
     return new NextResponse("Email is already in use", { status: 400 });
+  }
+  if (existingUsername) {
+    return new NextResponse("Username is already in use", { status: 300 });
   }
 
   const hashedPassword = await bcrypt.hash(password, 5);
   const newUser = new User({
     email,
+    username,
     password: hashedPassword,
   });
 

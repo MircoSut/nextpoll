@@ -24,7 +24,8 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target[0].value;
-    const password = e.target[1].value;
+    const username = e.target[1].value;
+    const password = e.target[2].value;
 
     if (!isValidEmail(email)) {
       setError("Email is invalid");
@@ -37,6 +38,11 @@ const SignUp = () => {
       return;
     }
 
+    if (!username || username.length < 6) {
+      setError("Username is too short");
+      return;
+    }
+
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -45,11 +51,15 @@ const SignUp = () => {
         },
         body: JSON.stringify({
           email,
+          username,
           password,
         }),
       });
       if (res.status === 400) {
         setError("This email is already registered");
+      }
+      if (res.status === 300) {
+        setError("Username already in use");
       }
       if (res.status === 200) {
         setError("");
@@ -81,6 +91,12 @@ const SignUp = () => {
               type="text"
               className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
               placeholder="Email"
+              required
+            />
+            <input
+              type="text"
+              className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
+              placeholder="Username"
               required
             />
             <input
