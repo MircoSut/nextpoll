@@ -32,7 +32,9 @@ export default function DashboardLayout({ children }) {
         activeComponent={activeComponent}
         setActiveComponent={handleComponentChange}
       />
-      <div className="w-3/4 bg-red-500">{renderMainComponent()}</div>
+      <div className="w-3/4 bg-white border-gray-300 border-l-2 p-2">
+        {renderMainComponent()}
+      </div>
       {children}
     </div>
   );

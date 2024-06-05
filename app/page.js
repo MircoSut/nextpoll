@@ -1,13 +1,12 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 
 export default function Home() {
   const { data: session, status: sessionStatus } = useSession();
 
   if (sessionStatus === "loading") {
     return (
-      <div className="h-screen">
+      <div className="h-screen flex items-center justify-center">
         <h1>Loading...</h1>
       </div>
     );

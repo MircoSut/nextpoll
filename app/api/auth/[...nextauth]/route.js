@@ -24,7 +24,7 @@ export const authOptions = {
               user.password
             );
             if (IsPasswordCorrect) {
-              return { id: user._id };
+              return user;
             }
           }
         } catch (error) {
@@ -55,7 +55,6 @@ export const authOptions = {
 
             await newUser.save();
             console.log("GitHub account saved in the db");
-            return true;
           }
           return true;
         } catch (error) {

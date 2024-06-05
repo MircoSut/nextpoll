@@ -4,7 +4,6 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { IoSearch } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
-
 const Navbar = () => {
   const { data: session, sessionStatus } = useSession();
 
@@ -14,7 +13,6 @@ const Navbar = () => {
     await signOut();
     router.push("/"); // Redirect to the home page after sign out
   };
-
   if (sessionStatus === "loading") {
     return (
       <div className="h-screen">
@@ -22,7 +20,6 @@ const Navbar = () => {
       </div>
     );
   }
-
   return (
     <div className="bg-gray-100">
       <ul className="flex justify-between p-2 items-center border-blue-700 border-b-2">
@@ -41,7 +38,7 @@ const Navbar = () => {
         </div>
         <div className="flex gap-2">
           <li className="mt-1">
-            {session?.user?.data?.username || session?.user?.email}
+            {session?.user?.email}
             {console.log(session)}
           </li>
           <li>
@@ -57,5 +54,4 @@ const Navbar = () => {
     </div>
   );
 };
-
 export default Navbar;

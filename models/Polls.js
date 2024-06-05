@@ -10,9 +10,11 @@ const pollSchema = new Schema(
     },
     title: {
       type: String,
-      required: true,
     },
     description: {
+      type: String,
+    },
+    question: {
       type: String,
       required: true,
     },
