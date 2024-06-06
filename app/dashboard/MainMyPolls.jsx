@@ -1,4 +1,5 @@
 "use client";
+import PollCard from "@/components/PollCard";
 import React, { useEffect, useState } from "react";
 
 const MainMyPolls = () => {
@@ -40,16 +41,7 @@ const MainMyPolls = () => {
       <div className="polls-list">
         {polls.map((poll) => (
           <div key={poll._id} className="poll">
-            <h2>{poll.title}</h2>
-            <p>{poll.description}</p>
-            <p>
-              <strong>Question:</strong> {poll.question}
-            </p>
-            <div className="options">
-              {poll.options.map((option) => (
-                <p key={option._id}>{option.option_text}</p>
-              ))}
-            </div>
+            <PollCard poll={poll} />
           </div>
         ))}
       </div>
