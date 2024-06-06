@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 
 const MainCreate = () => {
@@ -21,14 +22,8 @@ const MainCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    const title = formData.title;
-    const description = formData.description;
-    const question = formData.question;
-    const option1 = formData.option1;
-    const option2 = formData.option2;
-    const option3 = formData.option3;
-    const option4 = formData.option4;
+    const { title, description, question, option1, option2, option3, option4 } =
+      formData;
 
     try {
       const res = await fetch("/api/createpoll", {
@@ -46,13 +41,23 @@ const MainCreate = () => {
           option4,
         }),
       });
-      // if (res.status === 200) {
-      //   setError("");
-      //   router.push("/login");
-      // }
+
+      if (res.ok) {
+        setFormData({
+          title: "",
+          description: "",
+          question: "",
+          option1: "",
+          option2: "",
+          option3: "",
+          option4: "",
+        });
+        console.log("Poll created successfully");
+      } else {
+        console.error("Failed to create poll");
+      }
     } catch (error) {
-      setError("Error, try again");
-      console.log(error);
+      console.error("Error, try again", error);
     }
   };
 
@@ -63,7 +68,6 @@ const MainCreate = () => {
 
         <form className="mx-auto" onSubmit={handleSubmit}>
           <div className="poll-information">
-            {/* Title */}
             <h4>
               <strong>Title</strong> (optional)
             </h4>
@@ -75,7 +79,6 @@ const MainCreate = () => {
               placeholder="Title of the poll"
               className="block mx-auto w-full max-w-md p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
             />
-            {/* Description */}
             <h4>Description (optional)</h4>
             <textarea
               id="description"
@@ -87,7 +90,6 @@ const MainCreate = () => {
             ></textarea>
           </div>
           <div className="create">
-            {/* Question */}
             <h4 className="text-center mb-4">
               <strong>Choose your Question</strong>
             </h4>
@@ -100,7 +102,6 @@ const MainCreate = () => {
               placeholder="What's your favourite food?"
               className="block mx-auto w-full max-w-md p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
             />
-            {/* Option 1 */}
             <div className="create-option">
               <p className="build__options">
                 <strong>Option 1:</strong>
@@ -115,7 +116,6 @@ const MainCreate = () => {
                 className="block mx-auto w-full max-w-md p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
               />
             </div>
-            {/* Option 2 */}
             <div className="create-option">
               <p className="build__options">
                 <strong>Option 2:</strong>
@@ -130,7 +130,6 @@ const MainCreate = () => {
                 className="block mx-auto w-full max-w-md p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
               />
             </div>
-            {/* Option 3 */}
             <div className="create-option">
               <p className="build__options">
                 <strong>Option 3:</strong>
@@ -144,7 +143,6 @@ const MainCreate = () => {
                 className="block mx-auto w-full max-w-md p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400"
               />
             </div>
-            {/* Option 4 */}
             <div className="create-option">
               <p className="build__options">
                 <strong>Option 4:</strong>
@@ -160,7 +158,6 @@ const MainCreate = () => {
             </div>
           </div>
           <div className="text-center">
-            {/* Button */}
             <button
               type="submit"
               className="create-poll-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
